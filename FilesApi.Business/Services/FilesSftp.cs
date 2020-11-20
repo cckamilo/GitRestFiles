@@ -26,15 +26,17 @@ namespace FilesApi.Business.Services
         {
             response = new SftpResponse();
 
-            //string host = _config.GetValue<string>("");
-            //string usename = _config.GetValue<string>("");
-            //string password = _config.GetValue<string>("");
+            string host = _config.GetValue<string>("sftpConfig:host");
+            string username = _config.GetValue<string>("sftpConfig:username");
+            string password = _config.GetValue<string>("sftpConfig:password");
+            int port = _config.GetValue<int>("sftpConfig:port"); ;
 
-            string host = "f28-preview.awardspace.net";
-            string usename = "3655500";
-            string password = "Kreator6";
+            //string host = "f28-preview.awardspace.net";
+            //string usename = "3655500";
+            //string password = "Kreator6";
+            //int port = 221;
 
-            var connectionInfo = new Renci.SshNet.ConnectionInfo(host, 221, usename, new PasswordAuthenticationMethod(usename, password));
+            var connectionInfo = new Renci.SshNet.ConnectionInfo(host, port, username, new PasswordAuthenticationMethod(username, password));
             var sftp = new SftpClient(connectionInfo);
             sftp.Connect();
 
