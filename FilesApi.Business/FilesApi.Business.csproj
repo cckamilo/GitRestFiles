@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FilesApi.Models\FilesApi.Models.csproj" />
     <ProjectReference Include="..\FilesApi.Utilities\FilesApi.Utilities.csproj" />
   </ItemGroup>
 

@@ -18,7 +18,7 @@ namespace FilesApi.Controllers
     public class FilesController : ControllerBase
     {
         private readonly FilesSftp filesSftp;
-        private readonly ServiceResponse response;
+        private ServiceResponse response;
 
         public FilesController(FilesSftp _filesSftp, ServiceResponse _response)
         {
@@ -27,7 +27,7 @@ namespace FilesApi.Controllers
         }
 
         // GET: api/<FilesController>
-        [HttpGet("file")]
+        [HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
@@ -44,8 +44,18 @@ namespace FilesApi.Controllers
         [HttpPost("file")]
         public async Task<IActionResult> Post(IFormFile file)
         {
-            var result = await filesSftp.UploadFiles(file);
-            return Ok(result);
+
+            response = await filesSftp.UploadFiles(file);      
+            return Ok(response);
+
+        }
+
+        // GET api/<FilesController>/5
+        [HttpGet("file")]
+        public async Task<IActionResult> GetFiles()
+        {
+            response = await filesSftp.ListFiles("");
+            return Ok(response);
         }
 
         // PUT api/<FilesController>/5

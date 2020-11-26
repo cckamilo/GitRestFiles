@@ -30,6 +30,7 @@ namespace FilesApi
             services.AddControllers();
             services.AddTransient<FilesSftp>();
             services.AddTransient<ServiceResponse>();
+            services.AddTransient<SftpResponse>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
