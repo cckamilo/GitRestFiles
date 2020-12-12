@@ -26,7 +26,7 @@ namespace FilesApi.Controllers
             response = _response;
         }
 
-        // GET: api/<FilesController>
+        // GET: api/<FilesController>                                                                  l
         [HttpGet]
         public IEnumerable<string> Get()
         {
@@ -44,10 +44,8 @@ namespace FilesApi.Controllers
         [HttpPost("file")]
         public async Task<IActionResult> Post(IFormFile file)
         {
-
             response = await filesSftp.UploadFiles(file);      
             return Ok(response);
-
         }
 
         // GET api/<FilesController>/5

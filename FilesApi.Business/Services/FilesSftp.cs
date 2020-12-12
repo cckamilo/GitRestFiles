@@ -1,4 +1,6 @@
-﻿using FilesApi.Models.Sftp;
+﻿using FilesApi.DataAccess.Data;
+using FilesApi.DataAccess.Entities;
+using FilesApi.Models.Sftp;
 using FilesApi.Utilities.Response;
 using FilesApi.Utilities.Response.Models;
 using Microsoft.AspNetCore.Http;
@@ -19,11 +21,19 @@ namespace FilesApi.Business.Services
         private SftpResponse sftpResponse;
         private readonly IConfiguration config;
         private ServiceResponse response;
-        public FilesSftp(IConfiguration _config, ServiceResponse _response, SftpResponse _sftpResponse)
+        //MongoDb
+        private readonly ProductsDb productsDb;
+
+
+        public FilesSftp(IConfiguration _config,
+                            ServiceResponse _response,
+                            SftpResponse _sftpResponse,
+                            ProductsDb _productsDb)
         {
             config = _config;
             response = _response;
             sftpResponse = _sftpResponse;
+            productsDb = _productsDb;
         }
 
         /// <summary>
@@ -59,11 +69,28 @@ namespace FilesApi.Business.Services
                     response = new ServiceResponse();
                     response.body = new Body();
                     response.body.result = sftpResponse;
+
+                    if (sftpResponse.result)
+                    {
+                        Products product = new Products
+                        {
+                            Name = file.FileName,
+                            filePath = "http://" + "f28-preview.awardspace.net" + fileName,
+                            date = DateTime.Now.ToString(),
+                            price = 30000
+                        };
+
+                        productsDb.Create(product);
+                    }
+
+
                 }
+
                 return response;
             }
             catch (Exception ex)
             {
+
                 sftpResponse.result = false;
 
                 throw;
