@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FilesApi.Business.Services;
+//using FilesApi.Business.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -15,6 +15,9 @@ using Microsoft.Extensions.Options;
 using FilesApi.DataAccess.Data;
 using FilesApi.DataAccess.Data.Configuration;
 using FilesApi.Business.Implementation;
+using FilesApi.Business.Interface;
+using FilesApi.DataAccess.Interfaces;
+using FilesApi.DataAccess.Implementaion;
 
 namespace FilesApi
 {
@@ -35,20 +38,18 @@ namespace FilesApi
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
             });
             services.AddControllers();
-            services.AddTransient<FilesSftp>();
             services.AddTransient<ServiceResponse>();
             services.AddTransient<SftpResponse>();
-           
-
+            services.AddTransient<ProductsDb>();
+            services.AddTransient<IProducts, ProductsBll>();
+            services.AddTransient<IFiles, Files>();
             //MongoDb
             services.Configure<StoreDataBaseSettings>(
                 Configuration.GetSection(nameof(StoreDataBaseSettings)));
 
             services.AddSingleton<IStoreDataBaseSettings>(sp => 
             sp.GetRequiredService<IOptions<StoreDataBaseSettings>>().Value);
-            services.AddSingleton<ProductsDb>();
-            services.AddSingleton<ProductsBll>();
-
+            services.AddControllers().AddNewtonsoftJson();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

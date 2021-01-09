@@ -7,7 +7,8 @@ namespace FilesApi.Utilities.Response
     public class SftpResponse
     {
         public bool result { get; set; }
-        public string fileName { get; set; }
+        public string urlMain { get; set; }
+        public List<string> files { get; set; }
 
     }
 }

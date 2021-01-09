@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FilesApi.Business.Implementation;
+using FilesApi.Business.Interface;
+using FilesApi.DataAccess.Entities;
 using FilesApi.Utilities.Response;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace FilesApi.Controllers
 {
@@ -15,89 +18,134 @@ namespace FilesApi.Controllers
     public class ProductsController : Controller
     {
         private ServiceResponse response;
-        private readonly ProductsBll productsBll;
-
-        public ProductsController(ServiceResponse _response,
-                                  ProductsBll _products)
+        private readonly IProducts iProducts;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="_response"></param>
+        /// <param name="_products"></param>
+        public ProductsController(ServiceResponse _response, IProducts _iProducts)
         {
             this.response = _response;
-            this.productsBll = _products;
+            this.iProducts = _iProducts;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("product")]
-        public async Task<IActionResult> GetProduct()
+        public async Task<IActionResult> Get()
         {
-            response = await productsBll.GetProducts();
+            response = await iProducts.GetProducts();
             return Ok(response);
         }
-
-        // GET: ProductsController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: ProductsController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: ProductsController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}")]                
+        public async Task<IActionResult> GetById(string id)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var response = await iProducts.GetById(id);
+                return Ok(response);
             }
             catch
             {
                 return View();
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        // Delete: ProductsController/Delete/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            try
+            {
+                var response = await iProducts.DeleteById(id);
+                return Ok(response);
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        /// <summary>
+        /// /
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // GET: ProductsController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="products"></param>
+        /// <returns></returns>
+        // PUT: ProductsController/Edit/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Edit(string id, Products products)
+        {
+            try
+            {
+                        
+                if (id != null)
+                {
+                    products.id = id;                   
+                    var response = await iProducts.Update(id, products);
+                    return Ok(response);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+              
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
         // POST: ProductsController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Post(List<IFormFile> files, [FromForm] Products products)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (files.Count > 0 || products != null)
+                {
+                    response = await iProducts.PostProducts(files, products);
+                    return Ok(response);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+              
             }
-            catch
+            catch (Exception)
             {
-                return View();
+
+                throw;
             }
+          
         }
 
-        // GET: ProductsController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
 
-        // POST: ProductsController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }
