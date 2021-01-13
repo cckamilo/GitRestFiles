@@ -41,6 +41,13 @@ namespace FilesApi.Business.Interface
         /// <param name="products"></param>
         /// <returns></returns>
         Task<ServiceResponse> PostProducts(List<IFormFile> files, Products products);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="products"></param>
+        /// <returns></returns>
+        Task<ServiceResponse> UploadFilesAsync(List<IFormFile> files, Products products);
 
 
 

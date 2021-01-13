@@ -12,16 +12,18 @@ using FilesApi.DataAccess.Interfaces;
 
 namespace FilesApi.Business.Implementation
 {
-    public class ProductsBll :  IProducts
+    public class ProductsBll : IProducts
     {
         private readonly ProductsDb productsDb;
         private ServiceResponse response;
         private readonly IFiles iFiles;
-        public ProductsBll(ProductsDb _productsDb, ServiceResponse _response, IFiles _iFiles)
+        private readonly IBlobService iBlobService;
+        public ProductsBll(ProductsDb _productsDb, ServiceResponse _response, IFiles _iFiles, IBlobService _iBlobService)
         {
             this.productsDb = _productsDb;
             this.response = _response;
             this.iFiles = _iFiles;
+            this.iBlobService = _iBlobService;
         }
         /// <summary>
         /// 
@@ -73,7 +75,7 @@ namespace FilesApi.Business.Implementation
                 products.urlMain = result.urlMain;
                 products.files = result.files;
                 products.date = DateTime.Now.ToString();
-                var db = await productsDb.Create(products);            
+                var db = await productsDb.Create(products);
                 if (response != null)
                 {
                     response.body = new Body();
@@ -92,18 +94,36 @@ namespace FilesApi.Business.Implementation
         {
             bool result;
 
-            if (products.price > 0 && products.title != null && products.description != null &&products.size != null && products.quantity > 0 )
+            if (products.price > 0 && products.title != null && products.description != null && products.size != null && products.quantity > 0)
             {
-                 result = await productsDb.Update(id, products);
+                result = await productsDb.Update(id, products);
             }
             else
             {
                 result = false;
-            }       
+            }
             response.body = new Body();
             response.body.result = result;
             return response;
         }
 
+        public async Task<ServiceResponse> UploadFilesAsync(List<IFormFile> files, Products products)
+        {                                      
+            var lstResult = await iBlobService.UploadFileBlobAsync(files);
+            if (lstResult != null)
+            {
+                products.urlMain = lstResult[0];  
+                products.files = lstResult;            
+                products.date = DateTime.Now.ToString();
+                var db = await productsDb.Create(products);
+                if (response != null)
+                {
+                    response.body = new Body();
+                    response.body.result = db.id;
+                }
+            }
+            return response;
+                                            
+        }
     }
 }

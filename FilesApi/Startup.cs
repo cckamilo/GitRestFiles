@@ -18,6 +18,7 @@ using FilesApi.Business.Implementation;
 using FilesApi.Business.Interface;
 using FilesApi.DataAccess.Interfaces;
 using FilesApi.DataAccess.Implementaion;
+using Azure.Storage.Blobs;
 
 namespace FilesApi
 {
@@ -43,6 +44,7 @@ namespace FilesApi
             services.AddTransient<ProductsDb>();
             services.AddTransient<IProducts, ProductsBll>();
             services.AddTransient<IFiles, Files>();
+            services.AddSingleton<IBlobService, BlobService>();
             //MongoDb
             services.Configure<StoreDataBaseSettings>(
                 Configuration.GetSection(nameof(StoreDataBaseSettings)));
@@ -50,6 +52,10 @@ namespace FilesApi
             services.AddSingleton<IStoreDataBaseSettings>(sp => 
             sp.GetRequiredService<IOptions<StoreDataBaseSettings>>().Value);
             services.AddControllers().AddNewtonsoftJson();
+            //Azure
+            services.AddSingleton(x =>
+             new BlobServiceClient(connectionString:Configuration.GetValue<string>(key: "AzureBlobStorageConnectionsString")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

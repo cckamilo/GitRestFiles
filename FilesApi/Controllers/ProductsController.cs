@@ -129,7 +129,8 @@ namespace FilesApi.Controllers
             {
                 if (files.Count > 0 || products != null)
                 {
-                    response = await iProducts.PostProducts(files, products);
+                    //response = await iProducts.PostProducts(files, products);
+                    response = await iProducts.UploadFilesAsync(files, products);
                     return Ok(response);
                 }
                 else

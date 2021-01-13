@@ -84,7 +84,7 @@ namespace FilesApi.DataAccess.Data
                 await _productsCollection.InsertOneAsync(product);
                 return product;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 throw;
