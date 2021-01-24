@@ -29,10 +29,18 @@ namespace FilesApi.DataAccess.Implementaion
                 using (var stream = item.OpenReadStream())
                 {
                     var result = await blobClient.UploadAsync(stream);
-                
-                }               
+
+                }
             }
             return lstUrl;
+        }
+
+        public async Task<bool> DeleteBlobAsync(string blobName)
+        {
+            var containerClient = blobServiceClient.GetBlobContainerClient("camisetas");
+            var blobClient = containerClient.GetBlobClient(blobName);
+            var result = await blobClient.DeleteIfExistsAsync();
+            return result.Value;        
         }
     }
 }

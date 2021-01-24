@@ -15,6 +15,12 @@ namespace FilesApi.DataAccess.Interfaces
         /// <param name="files"></param>
         /// <returns></returns>
         Task<List<string>> UploadFileBlobAsync(List<IFormFile> files);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="blobName"></param>
+        /// <returns></returns>
+        Task<bool> DeleteBlobAsync(string blobName);
 
 
     }

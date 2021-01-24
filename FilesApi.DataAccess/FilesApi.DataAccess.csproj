@@ -18,4 +18,9 @@
     <ProjectReference Include="..\FilesApi.Utilities\FilesApi.Utilities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Implementaion\MongoDb\" />
+    <Folder Include="Interfaces\MongoDb\" />
+  </ItemGroup>
+
 </Project>

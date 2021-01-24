@@ -7,6 +7,5 @@ namespace FilesApi.Utilities.Response.Models
     public class Body
     {
         public object result { get; set; }
-
     }
 }

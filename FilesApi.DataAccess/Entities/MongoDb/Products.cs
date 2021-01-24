@@ -18,8 +18,11 @@ namespace FilesApi.DataAccess.Entities
         public int quantity { get; set; }
         public int price { get; set; }
         public string urlMain { get; set; }
+        public List<string> filesName { get; set; }
         public  List<string> files { get; set; }
         public string date { get; set; }
+
+
 
 
     }

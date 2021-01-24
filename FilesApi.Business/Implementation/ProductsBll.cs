@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using FilesApi.DataAccess.Interfaces;
-
+using System.Linq;
 namespace FilesApi.Business.Implementation
 {
     public class ProductsBll : IProducts
@@ -32,11 +32,18 @@ namespace FilesApi.Business.Implementation
         /// <returns></returns>
         public async Task<ServiceResponse> DeleteById(string id)
         {
-            var result = await productsDb.DeleteById(id);
-            response.body = new Body();
-            response.body.result = result;
+            var blob = await productsDb.GetById(id);
+            if (blob != null)
+            {
+                foreach (var item in blob.filesName)
+                {
+                    await iBlobService.DeleteBlobAsync(item);
+                }
+                var result = await productsDb.DeleteById(id);
+                response.body = new Body();
+                response.body.result = result;
+            }
             return response;
-
         }
         /// <summary>
         /// 
@@ -64,29 +71,6 @@ namespace FilesApi.Business.Implementation
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="files"></param>
-        /// <param name="products"></param>
-        /// <returns></returns>
-        public async Task<ServiceResponse> PostProducts(List<IFormFile> files, Products products)
-        {
-            var result = await iFiles.ListUploadFiles(files);
-            if (result != null)
-            {
-                products.urlMain = result.urlMain;
-                products.files = result.files;
-                products.date = DateTime.Now.ToString();
-                var db = await productsDb.Create(products);
-                if (response != null)
-                {
-                    response.body = new Body();
-                    response.body.result = db.id;
-                }
-            }
-            return response;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="id"></param>
         /// <param name="products"></param>
         /// <returns></returns>
@@ -106,14 +90,43 @@ namespace FilesApi.Business.Implementation
             response.body.result = result;
             return response;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="files"></param>
+        /// <param name="products"></param>
+        /// <returns></returns>
         public async Task<ServiceResponse> UploadFilesAsync(List<IFormFile> files, Products products)
-        {                                      
+        {
             var lstResult = await iBlobService.UploadFileBlobAsync(files);
             if (lstResult != null)
             {
-                products.urlMain = lstResult[0];  
-                products.files = lstResult;            
+                products.urlMain = lstResult[0];
+                products.files = lstResult;
+                products.date = DateTime.Now.ToString();
+                products.filesName = files.Select(i => i.FileName).ToList();
+                var db = await productsDb.Create(products);
+                if (response != null)
+                {
+                    response.body = new Body();
+                    response.body.result = db.id;
+                }
+            }
+            return response;
+        }
+        /// <summary>
+        /// Metodo que guarda archivos en sftp - No se utiliza, se guarda como aprendizaje
+        /// </summary>
+        /// <param name="files"></param>
+        /// <param name="products"></param>
+        /// <returns></returns>
+        public async Task<ServiceResponse> PostProducts(List<IFormFile> files, Products products)
+        {
+            var result = await iFiles.ListUploadFiles(files);
+            if (result != null)
+            {
+                products.urlMain = result.urlMain;
+                products.files = result.files;
                 products.date = DateTime.Now.ToString();
                 var db = await productsDb.Create(products);
                 if (response != null)
@@ -123,7 +136,6 @@ namespace FilesApi.Business.Implementation
                 }
             }
             return response;
-                                            
         }
     }
 }
