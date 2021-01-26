@@ -102,7 +102,6 @@ namespace FilesApi.DataAccess.Data
         /// <param name="id"></param>
         public async Task<bool> DeleteById(string id)
         {
-
             var result = await _productsCollection.DeleteOneAsync(item => item.id == id);
             if (result.DeletedCount > 0)
             {
@@ -112,7 +111,6 @@ namespace FilesApi.DataAccess.Data
             {
                 return false;
             }
-
         }
 
 

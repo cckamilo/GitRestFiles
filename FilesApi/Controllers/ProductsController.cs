@@ -18,13 +18,13 @@ namespace FilesApi.Controllers
     public class ProductsController : Controller
     {
         private ServiceResponse response;
-        private readonly IProducts iProducts;
+        private readonly IProductsBll iProducts;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="_response"></param>
         /// <param name="_products"></param>
-        public ProductsController(ServiceResponse _response, IProducts _iProducts)
+        public ProductsController(ServiceResponse _response, IProductsBll _iProducts)
         {
             this.response = _response;
             this.iProducts = _iProducts;

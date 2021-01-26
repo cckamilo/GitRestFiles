@@ -1,6 +1,6 @@
-﻿using FilesApi.DataAccess.Entities;
+﻿
+using FilesApi.DataAccess.Entities.MongoDb;
 using FilesApi.Utilities.Response;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace FilesApi.Business.Interface
 {
-    public interface IProducts
+    public interface IUserBll
     {
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        Task<ServiceResponse> GetProducts();
+        Task<ServiceResponse> Get();
         /// <summary>
         /// 
         /// </summary>
@@ -24,7 +24,7 @@ namespace FilesApi.Business.Interface
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="id"></param>                                        s
+        /// <param name="id"></param>
         /// <returns></returns>
         Task<ServiceResponse> DeleteById(string id);
         /// <summary>
@@ -33,23 +33,13 @@ namespace FilesApi.Business.Interface
         /// <param name="id"></param>
         /// <param name="products"></param>
         /// <returns></returns>
-        Task<ServiceResponse> Update(string id, Products products);
+        Task<ServiceResponse> Update(string id, Users products);
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="id"></param>
         /// <param name="products"></param>
         /// <returns></returns>
-        Task<ServiceResponse> PostProducts(List<IFormFile> files, Products products);
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="products"></param>
-        /// <returns></returns>
-        Task<ServiceResponse> UploadFilesAsync(List<IFormFile> files, Products products);
-
-
+        Task<ServiceResponse> Insert(Users products);
 
     }
 }

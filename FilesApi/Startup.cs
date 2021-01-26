@@ -19,6 +19,8 @@ using FilesApi.Business.Interface;
 using FilesApi.DataAccess.Interfaces;
 using FilesApi.DataAccess.Implementaion;
 using Azure.Storage.Blobs;
+using FilesApi.DataAccess.Interfaces.MongoDb;
+using FilesApi.DataAccess.Implementaion.MongoDb;
 
 namespace FilesApi
 {
@@ -42,9 +44,11 @@ namespace FilesApi
             services.AddTransient<ServiceResponse>();
             services.AddTransient<SftpResponse>();
             services.AddTransient<ProductsDb>();
-            services.AddTransient<IProducts, ProductsBll>();
+            services.AddTransient<IProductsBll, ProductsBll>();
             services.AddTransient<IFiles, Files>();
             services.AddSingleton<IBlobService, BlobService>();
+            services.AddSingleton<IUserBll, UserBll>();
+            services.AddSingleton<IUserRepository, UserDb>();
             //MongoDb
             services.Configure<StoreDataBaseSettings>(
                 Configuration.GetSection(nameof(StoreDataBaseSettings)));

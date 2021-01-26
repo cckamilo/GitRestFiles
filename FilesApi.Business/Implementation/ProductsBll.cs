@@ -12,7 +12,7 @@ using FilesApi.DataAccess.Interfaces;
 using System.Linq;
 namespace FilesApi.Business.Implementation
 {
-    public class ProductsBll : IProducts
+    public class ProductsBll : IProductsBll
     {
         private readonly ProductsDb productsDb;
         private ServiceResponse response;
