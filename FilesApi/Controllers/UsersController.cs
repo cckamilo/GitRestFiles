@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FilesApi.Business.Interface;
-using FilesApi.DataAccess.Entities.MongoDb;
+using FilesApi.DataAccess.MongoDb.Entities;
 using FilesApi.Utilities.Response;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

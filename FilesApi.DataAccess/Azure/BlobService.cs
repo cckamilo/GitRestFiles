@@ -1,13 +1,11 @@
 ﻿using Azure.Storage.Blobs;
-using FilesApi.DataAccess.Entities;
-using FilesApi.DataAccess.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FilesApi.DataAccess.Implementaion
+namespace FilesApi.DataAccess.Azure
 {
     public class BlobService : IBlobService
     {

@@ -1,5 +1,6 @@
-﻿using FilesApi.DataAccess.Data.Configuration;
-using FilesApi.DataAccess.Entities;
+﻿
+using FilesApi.DataAccess.MongoDb.Configuration;
+using FilesApi.DataAccess.MongoDb.Entities;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace FilesApi.DataAccess.Data
+namespace FilesApi.DataAccess.MongoDb.Repository
 {
     public class ProductsDb
     {

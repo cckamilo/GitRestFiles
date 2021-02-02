@@ -1,5 +1,5 @@
-﻿using FilesApi.DataAccess.Entities;
-using FilesApi.DataAccess.Interfaces;
+﻿
+
 using FilesApi.Utilities.Response;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -11,7 +11,7 @@ using Renci.SshNet;
 using Renci.SshNet.Async;
 using System.Linq;
 
-namespace FilesApi.DataAccess.Implementaion
+namespace FilesApi.DataAccess.Other
 {
     public class Files : IFiles
     {

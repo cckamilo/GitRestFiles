@@ -4,7 +4,7 @@ using System.Text;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace FilesApi.DataAccess.Entities.MongoDb
+namespace FilesApi.DataAccess.MongoDb.Entities
 {
     public class Users: EntityBase
     {

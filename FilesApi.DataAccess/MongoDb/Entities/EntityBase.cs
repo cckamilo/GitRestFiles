@@ -1,5 +1,5 @@
 ﻿using System;
-namespace FilesApi.DataAccess.Entities.MongoDb
+namespace FilesApi.DataAccess.MongoDb.Entities
 {
     public interface EntityBase
     {

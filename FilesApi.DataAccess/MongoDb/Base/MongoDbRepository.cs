@@ -1,6 +1,6 @@
-﻿using FilesApi.DataAccess.Data.Configuration;
-using FilesApi.DataAccess.Entities.MongoDb;
-using FilesApi.DataAccess.Interfaces.MongoDb;
+﻿
+using FilesApi.DataAccess.MongoDb.Configuration;
+using FilesApi.DataAccess.MongoDb.Entities;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -8,29 +8,39 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FilesApi.DataAccess.Implementaion.MongoDb
+namespace FilesApi.DataAccess.MongoDb.Base
 {
     public class MongoDbRepository<TEntity> : IMongoDbRepository<TEntity> where TEntity : class, EntityBase
     {
-        private readonly IMongoCollection<TEntity> _usersCollection;
+        private readonly IMongoCollection<TEntity> _collection;
 
         public MongoDbRepository(IStoreDataBaseSettings settings)
         {
             var mdbClient = new MongoClient(settings.connectionString);
             var database = mdbClient.GetDatabase(settings.dataBaseName);
-            _usersCollection = database.GetCollection<TEntity>(typeof(TEntity).Name);
+            _collection = database.GetCollection<TEntity>(typeof(TEntity).Name);
         }
 
-        public Task<bool> DeleteAsync(TEntity entity)
+        public async Task<bool> DeleteByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = await _collection.DeleteOneAsync(i => i.id == id);
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex);
+                return false;
+            }
         }
 
         public async Task<IList<TEntity>> GetAllAsync()
         {
             try
             {
-                var all = await _usersCollection.FindAsync(Builders<TEntity>.Filter.Empty);
+                var all = await _collection.FindAsync(Builders<TEntity>.Filter.Empty);
                 return await all.ToListAsync();
 
             }
@@ -42,9 +52,18 @@ namespace FilesApi.DataAccess.Implementaion.MongoDb
 
         }
 
-        public Task<TEntity> GetByIdAsync(Guid id)
+        public async Task<TEntity> GetByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = await _collection.Find<TEntity>(i => i.id == id).FirstOrDefaultAsync();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return null;
+            }
         }
 
         public async Task<TEntity> InsertAsync(TEntity entity)
@@ -56,7 +75,7 @@ namespace FilesApi.DataAccess.Implementaion.MongoDb
                     throw new ArgumentNullException(typeof(TEntity).Name + " object is null");
                 }
 
-                await _usersCollection.InsertOneAsync(entity);
+                await _collection.InsertOneAsync(entity);
 
             }
             catch (Exception ex)
@@ -77,7 +96,7 @@ namespace FilesApi.DataAccess.Implementaion.MongoDb
             try
             {
                 var filter = Builders<TEntity>.Filter.Eq(i => i.id, entity.id);
-                var res = await _usersCollection.FindOneAndReplaceAsync(filter, entity);
+                var res = await _collection.FindOneAndReplaceAsync(filter, entity);
             }
             catch (Exception ex)
             {

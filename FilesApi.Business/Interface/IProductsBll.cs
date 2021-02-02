@@ -1,4 +1,5 @@
-﻿using FilesApi.DataAccess.Entities;
+﻿
+using FilesApi.DataAccess.MongoDb.Entities;
 using FilesApi.Utilities.Response;
 using Microsoft.AspNetCore.Http;
 using System;

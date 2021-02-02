@@ -1,9 +1,10 @@
 ﻿using System;
-using FilesApi.DataAccess.Entities.MongoDb;
+using FilesApi.DataAccess.MongoDb.Base;
+using FilesApi.DataAccess.MongoDb.Entities;
 
-namespace FilesApi.DataAccess.Interfaces.MongoDb
+namespace FilesApi.DataAccess.MongoDb.Interfaces
 {
-    public interface IRepositoryUsers : IMongoDbRepository<Users>
+    public interface IUserRepository : IMongoDbRepository<Users>
     {
 
 

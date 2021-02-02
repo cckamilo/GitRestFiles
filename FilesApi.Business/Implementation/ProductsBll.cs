@@ -1,6 +1,4 @@
 ﻿using FilesApi.Business.Interface;
-using FilesApi.DataAccess.Data;
-using FilesApi.DataAccess.Entities;
 using FilesApi.Utilities.Response;
 using FilesApi.Utilities.Response.Models;
 using Microsoft.AspNetCore.Http;
@@ -8,8 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using FilesApi.DataAccess.Interfaces;
 using System.Linq;
+using FilesApi.DataAccess.MongoDb.Repository;
+using FilesApi.DataAccess.MongoDb.Entities;
+using FilesApi.DataAccess.Other;
+using FilesApi.DataAccess.Azure;
+
 namespace FilesApi.Business.Implementation
 {
     public class ProductsBll : IProductsBll

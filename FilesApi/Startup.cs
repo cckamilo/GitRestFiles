@@ -1,26 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-//using FilesApi.Business.Services;
+using Azure.Storage.Blobs;
+using FilesApi.Business.Implementation;
+using FilesApi.Business.Interface;
+using FilesApi.DataAccess.Azure;
+using FilesApi.DataAccess.MongoDb.Configuration;
+using FilesApi.DataAccess.MongoDb.Interfaces;
+using FilesApi.DataAccess.MongoDb.Repository;
+using FilesApi.DataAccess.Other;
+using FilesApi.Utilities.Response;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using FilesApi.Utilities.Response;
 using Microsoft.Extensions.Options;
-using FilesApi.DataAccess.Data;
-using FilesApi.DataAccess.Data.Configuration;
-using FilesApi.Business.Implementation;
-using FilesApi.Business.Interface;
-using FilesApi.DataAccess.Interfaces;
-using FilesApi.DataAccess.Implementaion;
-using Azure.Storage.Blobs;
-using FilesApi.DataAccess.Interfaces.MongoDb;
-using FilesApi.DataAccess.Implementaion.MongoDb;
 
 namespace FilesApi
 {

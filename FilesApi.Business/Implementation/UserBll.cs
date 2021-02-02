@@ -1,7 +1,6 @@
 ﻿using FilesApi.Business.Interface;
-using FilesApi.DataAccess.Entities.MongoDb;
-using FilesApi.DataAccess.Interfaces.MongoDb;
-
+using FilesApi.DataAccess.MongoDb.Entities;
+using FilesApi.DataAccess.MongoDb.Interfaces;
 using FilesApi.Utilities.Response;
 using FilesApi.Utilities.Response.Models;
 using System;

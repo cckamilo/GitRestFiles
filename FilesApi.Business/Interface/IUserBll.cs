@@ -1,5 +1,5 @@
 ﻿
-using FilesApi.DataAccess.Entities.MongoDb;
+using FilesApi.DataAccess.MongoDb.Entities;
 using FilesApi.Utilities.Response;
 using System;
 using System.Collections.Generic;
