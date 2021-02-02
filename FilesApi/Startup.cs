@@ -48,7 +48,7 @@ namespace FilesApi
             services.AddTransient<IFiles, Files>();
             services.AddSingleton<IBlobService, BlobService>();
             services.AddSingleton<IUserBll, UserBll>();
-            services.AddSingleton<IUserRepository, UserDb>();
+            services.AddSingleton<IUserRepository, UserRepository>();
             //MongoDb
             services.Configure<StoreDataBaseSettings>(
                 Configuration.GetSection(nameof(StoreDataBaseSettings)));

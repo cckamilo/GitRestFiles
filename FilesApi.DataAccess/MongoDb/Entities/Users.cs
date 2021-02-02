@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
-namespace FilesApi.Models.Models
+namespace FilesApi.DataAccess.Entities.MongoDb
 {
-    public class Users
+    public class Users: EntityBase
     {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
         public string id { get; set; }
 
         public string userName { get; set; }
@@ -13,5 +17,6 @@ namespace FilesApi.Models.Models
         public string password { get; set; }
 
         public string role { get; set; }
+
     }
 }

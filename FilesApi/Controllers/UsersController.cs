@@ -63,7 +63,71 @@ namespace FilesApi.Controllers
             }
 
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Edit(string id, Users user)
+        {
+            try
+            {
 
+                if (user != null)
+                {
+                    user.id = id;
+                    var response = await iUserBll.Update(user);
+                    return Ok(response);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+
+            }
+            catch
+            {
+                throw;
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(string id)
+        {
+            try
+            {
+                var response = await iUserBll.GetById(id);
+                return Ok(response);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            try
+            {
+                var response = await iUserBll.DeleteById(id);
+                return Ok(response);
+            }
+            catch
+            {
+                throw;
+            }
+        }
 
 
 
