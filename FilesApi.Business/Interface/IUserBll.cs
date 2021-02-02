@@ -33,13 +33,13 @@ namespace FilesApi.Business.Interface
         /// <param name="id"></param>
         /// <param name="products"></param>
         /// <returns></returns>
-        Task<ServiceResponse> Update(string id, Users products);
+        Task<ServiceResponse> Update(Users user);
         /// <summary>
         /// 
         /// </summary>
         /// <param name="products"></param>
         /// <returns></returns>
-        Task<ServiceResponse> Insert(Users products);
+        Task<ServiceResponse> Insert(Users user);
 
     }
 }
