@@ -41,5 +41,10 @@ namespace FilesApi.Business.Interface
         /// <returns></returns>
         Task<ServiceResponse> Insert(Users user);
 
+
+
+
+
+
     }
 }
