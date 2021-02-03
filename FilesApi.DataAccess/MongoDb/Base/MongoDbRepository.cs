@@ -2,8 +2,10 @@
 using FilesApi.DataAccess.MongoDb.Configuration;
 using FilesApi.DataAccess.MongoDb.Entities;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
@@ -88,13 +90,14 @@ namespace FilesApi.DataAccess.MongoDb.Base
 
         public IList<TEntity> SearchForAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return _collection.AsQueryable<TEntity>().Where(predicate.Compile()).ToList();
         }
 
         public async Task<bool> UpdateAsync(TEntity entity)
         {
             try
             {
+               
                 var filter = Builders<TEntity>.Filter.Eq(i => i.id, entity.id);
                 var res = await _collection.FindOneAndReplaceAsync(filter, entity);
             }
