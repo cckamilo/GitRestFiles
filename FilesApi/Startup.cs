@@ -1,3 +1,4 @@
+using System.Text;
 using Azure.Storage.Blobs;
 using FilesApi.Business.Implementation;
 using FilesApi.Business.Interface;
@@ -7,12 +8,14 @@ using FilesApi.DataAccess.MongoDb.Interfaces;
 using FilesApi.DataAccess.MongoDb.Repository;
 using FilesApi.DataAccess.Other;
 using FilesApi.Utilities.Response;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FilesApi
 {
@@ -41,6 +44,28 @@ namespace FilesApi
             services.AddSingleton<IBlobService, BlobService>();
             services.AddSingleton<IUserBll, UserBll>();
             services.AddSingleton<IUserRepository, UserRepository>();
+            //Authentication Jwt
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["Authentication:key"])),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+
+
+            });
+
+            services.AddSingleton<IAuthenticationManager, AuthenticationManager>();
             //MongoDb
             services.Configure<StoreDataBaseSettings>(
                 Configuration.GetSection(nameof(StoreDataBaseSettings)));
