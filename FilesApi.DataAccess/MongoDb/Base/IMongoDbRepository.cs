@@ -14,8 +14,7 @@ namespace FilesApi.DataAccess.MongoDb.Base
         Task<TEntity> InsertAsync(TEntity entity);
         Task<bool> UpdateAsync(TEntity entity);
         Task<bool> DeleteByIdAsync(string id);
-        IList<TEntity>
-        SearchForAsync(Expression<Func<TEntity, bool>> predicate);
+        IList<TEntity> SearchForAsync(Expression<Func<TEntity, bool>> predicate);
         Task<IList<TEntity>> GetAllAsync();
         Task<TEntity> GetByIdAsync(string id);
     }

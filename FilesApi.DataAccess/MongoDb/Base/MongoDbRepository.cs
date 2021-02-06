@@ -87,10 +87,24 @@ namespace FilesApi.DataAccess.MongoDb.Base
             return entity;
 
         }
-
-        public IList<TEntity> SearchForAsync(Expression<Func<TEntity, bool>> predicate)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public  IList<TEntity> SearchForAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return _collection.AsQueryable<TEntity>().Where(predicate.Compile()).ToList();
+            try
+            {
+                return _collection.AsQueryable<TEntity>().Where(predicate.Compile()).ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+                return null;
+            }
+
+
         }
 
         public async Task<bool> UpdateAsync(TEntity entity)

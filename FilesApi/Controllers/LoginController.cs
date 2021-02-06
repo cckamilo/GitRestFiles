@@ -44,7 +44,7 @@ namespace FilesApi.Controllers
         public IActionResult Post([FromBody] Users user)
         {
 
-            var token = authenticationManager.Authenticate(user.userName, user.password);
+            var token =  authenticationManager.Authenticate(user.userName, user.password);
 
             if (token == null)
                 return Unauthorized();

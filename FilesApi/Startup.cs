@@ -1,4 +1,3 @@
-using System.Text;
 using Azure.Storage.Blobs;
 using FilesApi.Business.Implementation;
 using FilesApi.Business.Interface;
@@ -16,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace FilesApi
 {
@@ -37,6 +37,8 @@ namespace FilesApi
             });
             services.AddControllers();
             services.AddTransient<ServiceResponse>();
+            //Response
+            services.AddTransient<UserResponse>();
             services.AddTransient<SftpResponse>();
             services.AddTransient<ProductsDb>();
             services.AddTransient<IProductsBll, ProductsBll>();

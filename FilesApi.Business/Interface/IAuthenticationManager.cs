@@ -1,9 +1,12 @@
-﻿using System;
+﻿using FilesApi.Utilities.Response;
+using System;
+using System.Threading.Tasks;
+
 namespace FilesApi.Business.Interface
 {
     public interface IAuthenticationManager
     {
-        string Authenticate(string username, string password);
+        UserResponse Authenticate(string username, string password);
 
     }
 }
