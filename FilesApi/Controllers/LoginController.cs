@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FilesApi.Controllers
 {
-    [Authorize]
+
     [Produces("application/json")]
     [Route("api/v1/login")]
     [ApiController]
@@ -46,8 +46,8 @@ namespace FilesApi.Controllers
 
             var token =  authenticationManager.Authenticate(user.userName, user.password);
 
-            if (token == null)
-                return Unauthorized();
+            if (token.token == null)
+                return Ok(new { message = token.message });
             return Ok(token);
 
         }

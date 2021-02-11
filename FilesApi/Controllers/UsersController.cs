@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FilesApi.Business.Interface;
 using FilesApi.DataAccess.MongoDb.Entities;
 using FilesApi.Utilities.Response;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,9 +14,10 @@ namespace FilesApi.Controllers
     [Produces("application/json")]
     [Route("api/v1/users")]
     [ApiController]
+    [Authorize(Roles ="admin")]
     public class UsersController : ControllerBase
     {
-
+        
         private readonly IUserBll iUserBll;
         private ServiceResponse response;
 
