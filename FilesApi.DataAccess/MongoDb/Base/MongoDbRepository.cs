@@ -100,7 +100,7 @@ namespace FilesApi.DataAccess.MongoDb.Base
             }
             catch (Exception)
             {
-                throw;
+    
                 return null;
             }
 
