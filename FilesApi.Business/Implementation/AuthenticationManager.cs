@@ -45,12 +45,14 @@ namespace FilesApi.Business.Implementation
                 {
                     Subject = new ClaimsIdentity(new Claim[] {
 
-                        new Claim(ClaimTypes.Name, username)
+                        new Claim(ClaimTypes.Name, username),
+                        new Claim(ClaimTypes.Role, result.Select(x => x.role).FirstOrDefault())
                     }),
                     Expires = DateTime.UtcNow.AddHours(1),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
                 };
                 var token = tokenHandler.CreateToken(tokenDescriptor);
+                response.message = "ok";
                 response.token = tokenHandler.WriteToken(token);
                 response.userId = result.Select(x => x.id).FirstOrDefault();
                 response.role = result.Select(x => x.role).FirstOrDefault();
@@ -58,7 +60,8 @@ namespace FilesApi.Business.Implementation
             }
             else
             {
-                return null;
+                response.message = "Usuario no existe";
+                return response;
             }
         }
     }
