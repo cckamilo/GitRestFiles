@@ -1,6 +1,6 @@
 ﻿namespace FilesApi.Utilities.Response
 {
-    public class UserResponse
+    public class AuthenticationResponse
     {
         public string message { get; set; }
         public string token { get; set; }
