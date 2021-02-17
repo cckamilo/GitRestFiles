@@ -6,7 +6,7 @@ namespace FilesApi.Business.Interface
 {
     public interface IAuthenticationManager
     {
-        UserResponse Authenticate(string username, string password);
+        AuthenticationResponse Authenticate(string username, string password);
 
     }
 }

@@ -14,32 +14,32 @@ namespace FilesApi.Business.Interface
         /// 
         /// </summary>
         /// <returns></returns>
-        Task<ServiceResponse> Get();
+        Task<List<UserResponse>> Get();
         /// <summary>
         /// 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<ServiceResponse> GetById(string id);
+        Task<UserResponse> GetById(string id);
         /// <summary>
         /// 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<ServiceResponse> DeleteById(string id);
+        Task<bool> DeleteById(string id);
         /// <summary>
         /// 
         /// </summary>
         /// <param name="id"></param>
         /// <param name="products"></param>
         /// <returns></returns>
-        Task<ServiceResponse> Update(Users user);
+        Task<bool> Update(Users user);
         /// <summary>
         /// 
         /// </summary>
         /// <param name="products"></param>
         /// <returns></returns>
-        Task<ServiceResponse> Insert(Users user);
+        Task<UserResponse> Insert(Users user);
 
 
 

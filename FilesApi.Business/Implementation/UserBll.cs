@@ -5,6 +5,7 @@ using FilesApi.Utilities.Response;
 using FilesApi.Utilities.Response.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,59 +16,85 @@ namespace FilesApi.Business.Implementation
      
         private readonly IUserRepository repository;
 
-        private ServiceResponse response;
+        private UserResponse response;
 
-        public UserBll(ServiceResponse _response, IUserRepository _repository)
+        public UserBll(UserResponse _response, IUserRepository _repository)
         {
          
             this.response = _response;
             this.repository = _repository;
         }
-
-        public async Task<ServiceResponse> DeleteById(string id)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<bool> DeleteById(string id)
         {
-           
+
             var result = await repository.DeleteByIdAsync(id);
-            response.body = new Body();
-            response.body.result = result;
-            return response;
+            return result;
         }
-
-        public async Task<ServiceResponse> Get()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<UserResponse>> Get()
         {
-
-           
+            var users = new List<UserResponse>();
             var result = await repository.GetAllAsync();
-            response.body = new Body();
-            response.body.result = result;
-            return response;
+            if (result.Count > 0)
+            {
+                result.ToList().ForEach(x =>
+                {
+                    users.Add(new UserResponse
+                    {
+                        id = x.id,
+                        username = x.userName,
+                        role = x.role
+                    });
+                });
+            }
+            return users;
         }
-
-        public async Task<ServiceResponse> GetById(string id)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<UserResponse> GetById(string id)
         {
-         
             var result = await repository.GetByIdAsync(id);
-            response.body = new Body();
-            response.body.result = result;
+
+            if (result != null)
+            {               
+                response.id = result.id;
+                response.role = result.role;
+                response.username = result.userName;
+            }
             return response;
         }
-
-        public async Task<ServiceResponse> Insert(Users user)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task<UserResponse> Insert(Users user)
         {
-           
             var result = await repository.InsertAsync(user);
-            response.body = new Body();
-            response.body.result = result.id;
+            if (result != null)
+            {
+                response.id = result.id;
+                response.role = result.role;
+                response.username = result.userName;
+            }
             return response;
         }
 
-        public async Task<ServiceResponse> Update(Users user)
+        public async Task<bool> Update(Users user)
         {
-      
-            var result = await repository.UpdateAsync(user);
-            response.body = new Body();
-            response.body.result = result;
-            return response;
+            var result = await repository.UpdateAsync(user);    
+            return result;
         }
     }
 }

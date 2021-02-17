@@ -16,10 +16,10 @@ namespace FilesApi.Business.Implementation
     {
         private readonly IUserRepository repository;
         private readonly IConfiguration configuration;
-        private readonly UserResponse response;
+        private readonly AuthenticationResponse response;
 
 
-        public AuthenticationManager(IConfiguration _configuration, IUserRepository _respository, UserResponse _response)
+        public AuthenticationManager(IConfiguration _configuration, IUserRepository _respository, AuthenticationResponse _response)
         {
             this.repository = _respository;
             this.configuration = _configuration;
@@ -32,7 +32,7 @@ namespace FilesApi.Business.Implementation
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public UserResponse Authenticate(string username, string password)
+        public AuthenticationResponse Authenticate(string username, string password)
         {
 
             var result =  repository.SearchForAsync(x => x.userName == username && x.password == password);
