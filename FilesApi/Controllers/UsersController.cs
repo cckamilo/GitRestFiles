@@ -19,12 +19,13 @@ namespace FilesApi.Controllers
     {
         
         private readonly IUserBll iUserBll;
-        private ServiceResponse response;
+        private UserResponse response;
 
-        public UsersController(IUserBll _iUserBll, ServiceResponse _response)
+        public UsersController(IUserBll _iUserBll, UserResponse _response)
         {
             this.iUserBll = _iUserBll;
             this.response = _response;
+ 
         }
 
         /// <summary>
@@ -34,8 +35,8 @@ namespace FilesApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            response = await iUserBll.Get();
-            return Ok(response);
+            var users = await iUserBll.Get();
+            return Ok(users);
         }
         /// <summary>
         /// 
@@ -50,7 +51,7 @@ namespace FilesApi.Controllers
                 if (user != null)
                 {
                     response = await iUserBll.Insert(user);
-                    return Ok(response);
+                    return Ok(new { result = response });
                 }
                 else
                 {
@@ -81,7 +82,7 @@ namespace FilesApi.Controllers
                 {
                     user.id = id;
                     var response = await iUserBll.Update(user);
-                    return Ok(response);
+                    return Ok(new { result = response});
                 }
                 else
                 {

@@ -39,6 +39,7 @@ namespace FilesApi
             services.AddTransient<ServiceResponse>();
             //Response
             services.AddTransient<UserResponse>();
+            services.AddTransient<AuthenticationResponse>();
             services.AddTransient<SftpResponse>();
             services.AddTransient<ProductsDb>();
             services.AddTransient<IProductsBll, ProductsBll>();

@@ -1,10 +1,7 @@
-﻿namespace FilesApi.Utilities.Response
+﻿using System;
+namespace FilesApi.Utilities.Response
 {
-    public class UserResponse
+    public interface UsersResponse
     {
-        public string message { get; set; }
-        public string token { get; set; }
-        public string userId { get; set; }
-        public string role { get; set; }
     }
 }
