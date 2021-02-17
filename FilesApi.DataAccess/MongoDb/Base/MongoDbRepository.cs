@@ -28,7 +28,9 @@ namespace FilesApi.DataAccess.MongoDb.Base
             try
             {
                 var result = await _collection.DeleteOneAsync(i => i.id == id);
-                return true;
+                if (result.DeletedCount > 0)
+                    return true;
+                return false;
             }
             catch (Exception ex)
             {
@@ -114,13 +116,21 @@ namespace FilesApi.DataAccess.MongoDb.Base
                
                 var filter = Builders<TEntity>.Filter.Eq(i => i.id, entity.id);
                 var res = await _collection.FindOneAndReplaceAsync(filter, entity);
+                if (res != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
+                return false;
             }
 
-            return true;
         }
 
     }
