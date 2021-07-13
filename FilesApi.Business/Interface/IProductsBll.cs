@@ -15,26 +15,26 @@ namespace FilesApi.Business.Interface
         /// 
         /// </summary>
         /// <returns></returns>
-        Task<ServiceResponse> GetProducts();
+        Task<List<Products>> GetProducts();
         /// <summary>
         /// 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<ServiceResponse> GetById(string id);
+        Task<Products> GetById(string id);
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="id"></param>                                        s
+        /// <param name="id"></param> 
         /// <returns></returns>
-        Task<ServiceResponse> DeleteById(string id);
+        Task<bool> DeleteById(string id);
         /// <summary>
         /// 
         /// </summary>
         /// <param name="id"></param>
         /// <param name="products"></param>
         /// <returns></returns>
-        Task<ServiceResponse> Update(string id, Products products);
+        Task<bool> Update(string id, Products products);
         /// <summary>
         /// 
         /// </summary>
@@ -48,7 +48,7 @@ namespace FilesApi.Business.Interface
         /// <param name="id"></param>
         /// <param name="products"></param>
         /// <returns></returns>
-        Task<ServiceResponse> UploadFilesAsync(List<IFormFile> files, Products products);
+        Task<Products> UploadFilesAsync(List<IFormFile> files, Products products);
 
 
 

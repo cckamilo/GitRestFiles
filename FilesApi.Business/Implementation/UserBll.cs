@@ -90,9 +90,14 @@ namespace FilesApi.Business.Implementation
             }
             return response;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public async Task<bool> Update(Users user)
         {
+            user.password = null;
             var result = await repository.UpdateAsync(user);    
             return result;
         }

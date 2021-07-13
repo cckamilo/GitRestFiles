@@ -32,7 +32,7 @@ namespace FilesApi.Business.Implementation
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<ServiceResponse> DeleteById(string id)
+        public async Task<bool> DeleteById(string id)
         {
             var blob = await productsDb.GetById(id);
             if (blob != null)
@@ -41,34 +41,32 @@ namespace FilesApi.Business.Implementation
                 {
                     await iBlobService.DeleteBlobAsync(item);
                 }
-                var result = await productsDb.DeleteById(id);
-                response.body = new Body();
-                response.body.result = result;
+                return await productsDb.DeleteById(id);
             }
-            return response;
+            else
+            {
+                return false;
+            }
+        
         }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<ServiceResponse> GetById(string id)
-        {
+        public async Task<Products> GetById(string id)
+        {         
             var result = await productsDb.GetById(id);
-            response.body = new Body();
-            response.body.result = result;
-            return response;
+            return result;
         }
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public async Task<ServiceResponse> GetProducts()
+        public async Task<List<Products>> GetProducts()
         {
-            var result = await productsDb.Get();
-            response.body = new Body();
-            response.body.result = result;
-            return response;
+            var result = await productsDb.Get();            
+            return result;
         }
         /// <summary>
         /// 
@@ -76,21 +74,11 @@ namespace FilesApi.Business.Implementation
         /// <param name="id"></param>
         /// <param name="products"></param>
         /// <returns></returns>
-        public async Task<ServiceResponse> Update(string id, Products products)
+        public async Task<bool> Update(string id, Products products)
         {
-            bool result;
 
-            if (products.price > 0 && products.title != null && products.description != null && products.size != null && products.quantity > 0)
-            {
-                result = await productsDb.Update(id, products);
-            }
-            else
-            {
-                result = false;
-            }
-            response.body = new Body();
-            response.body.result = result;
-            return response;
+             return await productsDb.Update(id, products);
+   
         }
         /// <summary>
         /// 
@@ -98,7 +86,7 @@ namespace FilesApi.Business.Implementation
         /// <param name="files"></param>
         /// <param name="products"></param>
         /// <returns></returns>
-        public async Task<ServiceResponse> UploadFilesAsync(List<IFormFile> files, Products products)
+        public async Task<Products> UploadFilesAsync(List<IFormFile> files, Products products)
         {
             var lstResult = await iBlobService.UploadFileBlobAsync(files);
             if (lstResult != null)
@@ -107,14 +95,13 @@ namespace FilesApi.Business.Implementation
                 products.files = lstResult;
                 products.date = DateTime.Now.ToString();
                 products.filesName = files.Select(i => i.FileName).ToList();
-                var db = await productsDb.Create(products);
-                if (response != null)
-                {
-                    response.body = new Body();
-                    response.body.result = db.id;
-                }
+                return await productsDb.Create(products);
             }
-            return response;
+            else
+            {
+                return null;
+            }
+  
         }
         /// <summary>
         /// Metodo que guarda archivos en sftp - No se utiliza, se guarda como aprendizaje
