@@ -32,10 +32,10 @@ namespace FilesApi.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        [HttpGet("product")]
+        [HttpGet]
         public async Task<IActionResult> Get()
         {
-            response = await iProducts.GetProducts();
+            var response = await iProducts.GetProducts();
             return Ok(response);
         }
         /// <summary>
@@ -49,7 +49,7 @@ namespace FilesApi.Controllers
             try
             {
                 var response = await iProducts.GetById(id);
-                return Ok(response);
+                return Ok(response);            
             }
             catch
             {
@@ -68,7 +68,7 @@ namespace FilesApi.Controllers
             try
             {
                 var response = await iProducts.DeleteById(id);
-                return Ok(response);
+                return Ok(new { message = response });
             }
             catch
             {
@@ -102,7 +102,7 @@ namespace FilesApi.Controllers
                 {
                     products.id = id;                   
                     var response = await iProducts.Update(id, products);
-                    return Ok(response);
+                    return Ok(new { message = response });
                 }
                 else
                 {
@@ -128,7 +128,7 @@ namespace FilesApi.Controllers
             {
                 if (files.Count > 0 || products != null)
                 {
-                    response = await iProducts.UploadFilesAsync(files, products);
+                    var response = await iProducts.UploadFilesAsync(files, products);
                     return Ok(response);
                 }
                 else
