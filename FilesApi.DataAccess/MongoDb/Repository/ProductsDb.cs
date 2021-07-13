@@ -1,9 +1,11 @@
 ﻿
 using FilesApi.DataAccess.MongoDb.Configuration;
 using FilesApi.DataAccess.MongoDb.Entities;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -62,14 +64,32 @@ namespace FilesApi.DataAccess.MongoDb.Repository
 
             try
             {
-                var update = Builders<Products>.Update.Set(a => a.price, product.price)
-                    .Set(a => a.title, product.title)
-                    .Set(a => a.description, product.description)
-                    .Set(a => a.size, product.size)
-                    .Set(a => a.quantity, product.quantity);
 
-                var result = await _productsCollection.UpdateOneAsync(item => item.id == id, update);
-                return result.IsModifiedCountAvailable;
+                var valid = await _productsCollection.Find<Products>(item => item.id == id).ToListAsync();
+                if (valid.Count > 0)
+                {
+                    var builder = Builders<Products>.Update.Set(x => x.id, id);
+
+                    foreach (PropertyInfo prop in product.GetType().GetProperties())
+                    {
+                        var value = product.GetType().GetProperty(prop.Name).GetValue(product, null);
+
+                        if (prop.Name != "id")
+                        {
+                            if (value != null)
+                            {
+                                builder = builder.Set(prop.Name, value);
+                            }
+                        }
+                    }
+                    var result = await _productsCollection.UpdateOneAsync(item => item.id == id, builder);
+                    return result.IsModifiedCountAvailable;
+                }
+                else
+                {
+                    return false;
+                }
+               
             }
             catch (Exception ex)
             {

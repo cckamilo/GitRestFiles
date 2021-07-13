@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -113,17 +114,24 @@ namespace FilesApi.DataAccess.MongoDb.Base
         {
             try
             {
-               
-                var filter = Builders<TEntity>.Filter.Eq(i => i.id, entity.id);
-                var res = await _collection.FindOneAndReplaceAsync(filter, entity);
-                if (res != null)
+
+                var builder = Builders<TEntity>.Update.Set(x => x.id, entity.id);
+
+                foreach (PropertyInfo prop in entity.GetType().GetProperties())
                 {
-                    return true;
+                    var value = entity.GetType().GetProperty(prop.Name).GetValue(entity, null);
+
+                    if (prop.Name != "id")
+                    {
+          
+                        if (value != null)
+                        {
+                            builder = builder.Set(prop.Name, value);
+                        }
+                    }
                 }
-                else
-                {
-                    return false;
-                }
+                var result = await _collection.UpdateOneAsync(item => item.id == entity.id, builder);
+                return result.IsModifiedCountAvailable;
             }
             catch (Exception ex)
             {
