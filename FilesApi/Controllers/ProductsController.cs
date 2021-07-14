@@ -101,7 +101,7 @@ namespace FilesApi.Controllers
                 if (id != null)
                 {
                     products.id = id;                   
-                    var response = await iProducts.Update(id, products);
+                    var response = await iProducts.Update(products);
                     return Ok(new { message = response });
                 }
                 else
@@ -126,7 +126,7 @@ namespace FilesApi.Controllers
         {
             try
             {
-                if (files.Count > 0 || products != null)
+                if (files.Count > 0 && products != null)
                 {
                     var response = await iProducts.UploadFilesAsync(files, products);
                     return Ok(response);

@@ -41,12 +41,12 @@ namespace FilesApi
             services.AddTransient<UserResponse>();
             services.AddTransient<AuthenticationResponse>();
             services.AddTransient<SftpResponse>();
-            services.AddTransient<ProductsDb>();
             services.AddTransient<IProductsBll, ProductsBll>();
             services.AddTransient<IFiles, Files>();
             services.AddSingleton<IBlobService, BlobService>();
             services.AddSingleton<IUserBll, UserBll>();
             services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddSingleton<IProductsRepository, ProductsRepository>();
             //Authentication Jwt
             services.AddAuthentication(x =>
             {
