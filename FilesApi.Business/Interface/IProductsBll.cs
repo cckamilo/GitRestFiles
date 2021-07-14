@@ -15,7 +15,7 @@ namespace FilesApi.Business.Interface
         /// 
         /// </summary>
         /// <returns></returns>
-        Task<List<Products>> GetProducts();
+        Task<IList<Products>> GetProducts();
         /// <summary>
         /// 
         /// </summary>
@@ -34,7 +34,7 @@ namespace FilesApi.Business.Interface
         /// <param name="id"></param>
         /// <param name="products"></param>
         /// <returns></returns>
-        Task<bool> Update(string id, Products products);
+        Task<bool> Update(Products products);
         /// <summary>
         /// 
         /// </summary>

@@ -11,21 +11,23 @@ using FilesApi.DataAccess.MongoDb.Repository;
 using FilesApi.DataAccess.MongoDb.Entities;
 using FilesApi.DataAccess.Other;
 using FilesApi.DataAccess.Azure;
+using FilesApi.DataAccess.MongoDb.Interfaces;
 
 namespace FilesApi.Business.Implementation
 {
     public class ProductsBll : IProductsBll
     {
-        private readonly ProductsDb productsDb;
         private ServiceResponse response;
         private readonly IFiles iFiles;
         private readonly IBlobService iBlobService;
-        public ProductsBll(ProductsDb _productsDb, ServiceResponse _response, IFiles _iFiles, IBlobService _iBlobService)
+        private readonly IProductsRepository iRepository;
+
+        public ProductsBll(ServiceResponse _response, IFiles _iFiles, IBlobService _iBlobService, IProductsRepository _iRepository)
         {
-            this.productsDb = _productsDb;
             this.response = _response;
             this.iFiles = _iFiles;
             this.iBlobService = _iBlobService;
+            this.iRepository = _iRepository;
         }
         /// <summary>
         /// 
@@ -34,14 +36,14 @@ namespace FilesApi.Business.Implementation
         /// <returns></returns>
         public async Task<bool> DeleteById(string id)
         {
-            var blob = await productsDb.GetById(id);
+            var blob = await iRepository.GetByIdAsync(id);
             if (blob != null)
             {
                 foreach (var item in blob.filesName)
                 {
                     await iBlobService.DeleteBlobAsync(item);
                 }
-                return await productsDb.DeleteById(id);
+                return await iRepository.DeleteByIdAsync(id);
             }
             else
             {
@@ -56,16 +58,16 @@ namespace FilesApi.Business.Implementation
         /// <returns></returns>
         public async Task<Products> GetById(string id)
         {         
-            var result = await productsDb.GetById(id);
+            var result = await iRepository.GetByIdAsync(id);
             return result;
         }
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public async Task<List<Products>> GetProducts()
+        public async Task<IList<Products>> GetProducts()
         {
-            var result = await productsDb.Get();            
+            var result = await iRepository.GetAllAsync();            
             return result;
         }
         /// <summary>
@@ -74,10 +76,10 @@ namespace FilesApi.Business.Implementation
         /// <param name="id"></param>
         /// <param name="products"></param>
         /// <returns></returns>
-        public async Task<bool> Update(string id, Products products)
+        public async Task<bool> Update(Products products)
         {
-
-             return await productsDb.Update(id, products);
+           
+             return await iRepository.UpdateAsync(products);
    
         }
         /// <summary>
@@ -95,7 +97,7 @@ namespace FilesApi.Business.Implementation
                 products.files = lstResult;
                 products.date = DateTime.Now.ToString();
                 products.filesName = files.Select(i => i.FileName).ToList();
-                return await productsDb.Create(products);
+                return await iRepository.InsertAsync(products);
             }
             else
             {
@@ -117,7 +119,7 @@ namespace FilesApi.Business.Implementation
                 products.urlMain = result.urlMain;
                 products.files = result.files;
                 products.date = DateTime.Now.ToString();
-                var db = await productsDb.Create(products);
+                var db = await iRepository.InsertAsync(products);
                 if (response != null)
                 {
                     response.body = new Body();
