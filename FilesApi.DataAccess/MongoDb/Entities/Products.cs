@@ -6,7 +6,7 @@ using System.Text;
 
 namespace FilesApi.DataAccess.MongoDb.Entities
 {
-    public class Products
+    public class Products: EntityBase
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -21,9 +21,6 @@ namespace FilesApi.DataAccess.MongoDb.Entities
         public List<string> filesName { get; set; }
         public  List<string> files { get; set; }
         public string date { get; set; }
-
-
-
 
     }
 }
